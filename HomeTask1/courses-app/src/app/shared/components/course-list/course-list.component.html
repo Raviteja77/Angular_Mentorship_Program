@@ -1,0 +1,15 @@
+<div class="courses">
+    <ng-container *ngFor="let course of courseList">
+        <div class="courses_list">
+            <app-course-card [course]="course">
+                <div class="courses_list_buttons">
+                    <app-button [buttonClass]="'btn btn-outline-primary'" [buttonText]="'Show course'" (emitButtonClick)="clickHandler($event)"></app-button>
+                    <ng-template [ngIf]="isCoursesEditable">
+                        <app-button [buttonClass]="'btn btn-outline-info'" [iconName]="penIcon"></app-button>
+                        <app-button [buttonClass]="'btn btn-outline-danger'" [iconName]="trashIcon"></app-button>
+                    </ng-template>
+                </div>
+            </app-course-card>
+        </div>
+    </ng-container>
+</div>

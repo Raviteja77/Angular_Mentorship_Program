@@ -1,0 +1,24 @@
+<section class='course'>
+    <div class='row'>
+        <div class='col-8'>
+            <h3>{{course.title}}</h3>
+            <p>{{course.description}}</p>
+        </div>
+        <div class='col-4'>
+            <div class='authors'>
+                <strong>Authors</strong>:
+                <ng-container *ngFor="let author of course.authors; let index=index">
+                    {{author}}
+                    <ng-template [ngIf]="index < course.authors.length-1">,</ng-template>
+                </ng-container>
+            </div>
+            <div>
+                <strong>Duration</strong>: {{course.duration | duration}}
+            </div>
+            <div>
+                <strong>Created</strong>: {{course.creationDate}}
+            </div>
+            <ng-content></ng-content>
+        </div>
+    </div>
+</section>
