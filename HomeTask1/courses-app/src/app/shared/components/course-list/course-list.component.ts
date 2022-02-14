@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { buttonText } from '../../constants';
 
 @Component({
   selector: 'app-course-list',
@@ -20,6 +21,8 @@ export class CourseListComponent implements OnInit {
   penIcon = faPen;
 
   trashIcon = faTrash;
+
+  buttonText = buttonText;
 
   constructor() {}
 

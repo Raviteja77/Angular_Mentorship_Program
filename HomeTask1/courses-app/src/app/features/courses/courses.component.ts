@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CoursesService } from 'src/app/services/courses.service';
+import { buttonText } from '../../shared/constants';
 
 @Component({
   selector: 'app-courses',
@@ -13,6 +14,8 @@ export class CoursesComponent implements OnInit {
   isCoursesEditable: boolean = true;
 
   showModal: boolean = true;
+
+  buttonText = buttonText;
 
   constructor(private courses_service: CoursesService) {
     this.courses_service.getCoursesList().subscribe(data => {
