@@ -1,0 +1,13 @@
+
+.courses {
+    border: 2px solid #95CEE8;
+    margin: 1rem;
+}
+
+.courses_list {
+    margin: 1rem;
+}
+
+.courses_list_buttons * {
+    margin: 1rem;
+}

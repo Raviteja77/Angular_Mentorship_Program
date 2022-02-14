@@ -1,0 +1,20 @@
+<app-header>
+    <div class="d-flex">
+        <strong class="username">Ravi Teja</strong>
+        <div>
+            <app-button [buttonClass]="'btn btn-outline-danger'" [buttonText]="buttonText.LOGOUT" (emitButtonClick)="updateModalStatus($event)">
+            </app-button>
+        </div>
+    </div> 
+</app-header>
+
+<div class="main_content">
+    <app-course-list *ngIf="coursesList" [courseList]="coursesList" [isCoursesEditable]="isCoursesEditable"></app-course-list>
+    <app-info *ngIf="!coursesList">
+        <app-button [buttonClass]="'btn btn-outline-warning'" [buttonText]="buttonText.NEWCOURSE"></app-button>
+    </app-info>
+</div>
+
+<app-confirmation-modal [title]="'Logout'" [okButtonText]="buttonText.CONFIRM" [cancelButtonText]="buttonText.CANCEL" *ngIf="showModal">
+    <ng-container>Are you sure to Logout.?</ng-container>
+</app-confirmation-modal>

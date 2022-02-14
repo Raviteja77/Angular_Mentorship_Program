@@ -1,0 +1,4 @@
+<button type="button" class="{{ buttonClass }}" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="clickHandler()">
+    <ng-template [ngIf]="buttonText != ''">{{buttonText}}</ng-template>
+    <ng-template [ngIf]="iconName != ''"><fa-icon [icon]="iconName"></fa-icon></ng-template>
+</button>
