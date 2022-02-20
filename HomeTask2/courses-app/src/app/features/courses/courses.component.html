@@ -1,0 +1,13 @@
+
+<div class="main_content">
+    <!-- <app-course-list *ngIf="coursesList" [courseList]="coursesList" [isCoursesEditable]="isCoursesEditable"></app-course-list>
+    <app-info *ngIf="!coursesList">
+        <app-button [buttonClass]="'btn btn-outline-warning'" [buttonText]="buttonText.NEWCOURSE"></app-button>
+    </app-info> -->
+    <app-course-form></app-course-form>
+</div>
+
+
+<app-confirmation-modal [title]="'Logout'" [okButtonText]="buttonText.CONFIRM" [cancelButtonText]="buttonText.CANCEL" *ngIf="showModal">
+    <ng-container>Are you sure to Logout.?</ng-container>
+</app-confirmation-modal>

@@ -1,0 +1,16 @@
+
+<app-header>
+    <div class="d-flex">
+        <strong class="username">Ravi Teja</strong>
+        <div>
+            <app-button [buttonClass]="'btn btn-outline-danger'" [buttonText]="buttonText.LOGOUT" (emitButtonClick)="updateModalStatus($event)">
+            </app-button>
+        </div>
+    </div> 
+</app-header>
+
+<app-courses></app-courses>
+
+<!-- <app-login></app-login> -->
+
+<!-- <app-registration></app-registration> -->

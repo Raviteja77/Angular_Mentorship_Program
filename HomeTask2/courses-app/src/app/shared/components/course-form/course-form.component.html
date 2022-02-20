@@ -1,0 +1,71 @@
+<form class="courses-form" [formGroup]="course" (ngSubmit)="submitForm()">
+    <div class="row m-2">
+        <div class="col-6">
+            <label for="title" class="form-label"><strong>Title</strong></label>
+            <input type="text" class="form-control" formControlName="title"
+                id="title">
+            <div *ngIf="form.title?.touched">
+                <div class="error-msg" *ngIf="form.title?.errors?.required">
+                    Title is required
+                </div>
+            </div>
+        </div>
+        <div class="col-6 text-end">
+            <app-button [buttonText]="buttonText.CREATE_COURSE"
+                [buttonType]="buttonText.SUBMIT_TYPE" [buttonClass]="'btn
+                btn-outline-primary mt-4'"></app-button>
+        </div>
+    </div>
+    <div class="courses-form__decription">
+        <label for="description" class="form-label"><strong>Description</strong></label>
+        <textarea class="description__text" formControlName="description"
+            cols="160" rows="7"></textarea>
+        <div *ngIf="form.description?.touched">
+            <div class="error-msg" *ngIf="form.description?.errors?.required">
+                Description is required
+            </div>
+        </div>
+        <div class="courses-form__main-content">
+            <div class="row">
+                <div class="col-6">
+                    <div class="text-center">
+                        <strong>Add Author</strong>
+                    </div>
+                    <label for="Author_name" class="form-label"><strong>Author
+                            name</strong></label>
+                    <input type="text" formControlName="author"
+                        class="form-control" id="author_name">
+                    <app-button [buttonText]="buttonText.CREATE_AUTHOR"
+                        [buttonClass]="'btn btn-outline-primary m-2'"></app-button>
+                    <div>
+                        <div class="text-center">
+                            <strong>Duration</strong>
+                        </div>
+                        <label for="duration" class="form-label"><strong>Duration</strong></label>
+                        <input type="number" formControlName="duration"
+                            class="form-control" id="duration">
+                        <div *ngIf="form.duration?.touched">
+                            <div class="error-msg"
+                                *ngIf="form.duration?.errors?.required">
+                                Duration is required
+                            </div>
+                        </div>
+                        <div>Duration: </div>
+                    </div>
+                </div>
+                <div class="col-6 text-center">
+                    <strong>Authors List</strong>
+                    <div class="row m-1">
+                        <div class="col-6">
+                            <strong>Vasiley</strong>
+                        </div>
+                        <div class="col-6">
+                            <app-button [buttonText]="buttonText.DELETE_AUTHOR"
+                        [buttonClass]="'btn btn-outline-danger'"></app-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

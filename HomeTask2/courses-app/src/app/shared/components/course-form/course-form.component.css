@@ -1,0 +1,20 @@
+/* .courses-form {
+  border: 2px solid #95cee8;
+  margin: 1rem;
+} */
+
+input {
+  border: 2px solid rgba(243, 160, 86, 255);
+}
+
+.courses-form__decription {
+  margin: 1rem;
+}
+
+.description__text {
+  border: 2px solid rgba(249, 226, 158, 255);
+}
+
+.error-msg {
+  color: red;
+}

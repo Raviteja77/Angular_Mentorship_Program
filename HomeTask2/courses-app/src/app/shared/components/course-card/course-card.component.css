@@ -1,0 +1,12 @@
+
+
+.course {
+    border: 2px solid #A6E895;
+    margin-top: 1rem;
+    padding: 1rem;
+}
+.authors {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

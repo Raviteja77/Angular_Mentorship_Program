@@ -1,0 +1,11 @@
+
+.username {
+    position: relative;
+    top: 0.5rem;
+    right: 2rem;
+}
+
+.main_content {
+    border: 2px solid #95CEE8;
+    margin: 1rem;
+}
