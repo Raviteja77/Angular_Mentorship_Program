@@ -1,0 +1,51 @@
+<form class="registration" [formGroup]="user" (ngSubmit)="submitForm()">
+    <div class="mb-3">
+        <label for="name" class="form-label"><strong>Name</strong></label>
+        <input type="name" class="form-control" formControlName="name"
+            id="name">
+        <div *ngIf="form.name?.touched">
+            <div class="error-msg" *ngIf="form.name?.errors?.required">
+                Name is required
+            </div>
+            <div class="error-msg" *ngIf="form.name?.errors?.minlength">
+                Name should not be less than 6 symbols
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label"><strong>Email</strong></label>
+        <input type="email" appEmailvalidator class="form-control"
+            formControlName="email" id="email">
+        <div *ngIf="form.email?.touched" class="error-msg">
+            <div *ngIf="form.email?.errors?.required">Email is required</div>
+            <div *ngIf="form.email?.errors?.invalidEmail &&
+                !form.email?.errors?.required">Email must be a valid email
+                address</div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="position-relative">
+            <label for="password" class="form-label"><strong>Password</strong></label>
+            <input type="password" formControlName="password" id="password"
+                class="form-control">
+            <span appToggle #visible="toggle">
+                <fa-icon class="icon" id="eye" [icon]="faEye"
+                    *ngIf="!visible.isVisible"></fa-icon>
+                <fa-icon class="icon" id="eyeSlash" [icon]="faEyeSlash"
+                    *ngIf="visible.isVisible"></fa-icon>
+            </span>
+        </div>
+        <div *ngIf="form.password?.touched">
+            <div class="error-msg" *ngIf="form.password?.errors?.required">
+                Password is required
+            </div>
+        </div>
+    </div>
+    <div class="registration__button text-center">
+        <!-- <app-button [buttonClass]="'btn btn-outline-primary'" [buttonText]="buttonText.registration" [buttonType]="buttonText.SUBMIT_TYPE">
+        </app-button> -->
+        <button type="submit" class="btn btn-outline-primary">Registration</button>
+    </div>
+    <div class="registration__note text-center">If you don't have an account you
+        can <a href="#">Login</a></div>
+</form>

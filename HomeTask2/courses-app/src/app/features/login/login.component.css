@@ -1,0 +1,23 @@
+.login {
+    border: 2px solid #95CEE8;
+    padding: 1rem 25rem;
+    margin: 1rem;
+}
+
+.login * {
+    margin: 0.5rem 0;
+}
+
+input {
+    border: 2px solid rgba(243, 160, 86, 255);
+}
+
+.icon {
+    position: absolute;
+    left: 92%;
+    top: 55%;
+}
+
+.error-msg {
+    color:  rgba(241, 145, 145, 255);;
+}

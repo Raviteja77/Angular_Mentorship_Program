@@ -1,0 +1,41 @@
+<form class="login" #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+    <div class="mb-3">
+        <label for="email" class="form-label"><strong>Email</strong></label>
+        <input type="email" appEmailvalidator required class="form-control"
+            name="email"
+            id="email" #email="ngModel" ngModel>
+        <div *ngIf="email?.touched">
+            <div *ngIf="email.errors?.required" class="error-msg">
+                Email is required
+            </div>
+            <div *ngIf="email.errors?.invalidEmail && !email.errors?.required"
+                class="error-msg">
+                Email is invalid
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="position-relative">
+            <label for="password" class="form-label"><strong>Password</strong></label>
+            <input type="password" required name="password" id="password"
+                class="form-control" #password="ngModel" ngModel>
+            <span appToggle #visible="toggle">
+                <fa-icon class="icon" id="eye" [icon]="faEye"
+                    *ngIf="!visible.isVisible"></fa-icon>
+                <fa-icon class="icon" id="eyeSlash" [icon]="faEyeSlash"
+                    *ngIf="visible.isVisible"></fa-icon>
+            </span>
+        </div>
+        <div *ngIf="password?.touched && password.errors?.required"
+            class="error-msg">
+            Password is required
+        </div>
+    </div>
+    <div class="login__button text-center">
+        <!-- <app-button [buttonClass]="'btn btn-outline-primary'" [buttonText]="buttonText.LOGIN" [buttonType]="buttonText.SUBMIT_TYPE">
+        </app-button> -->
+        <button type="submit" class="btn btn-outline-primary">Login</button>
+    </div>
+    <div class="login__note text-center">If you don't have an account you can <a
+            href="#">Register</a></div>
+</form>

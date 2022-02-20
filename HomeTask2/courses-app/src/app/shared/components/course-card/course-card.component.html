@@ -1,0 +1,21 @@
+<section class='course'>
+    <div class='row'>
+        <div class='col-8'>
+            <h3>{{course.title}}</h3>
+            <p>{{course.description}}</p>
+        </div>
+        <div class='col-4'>
+            <div class='authors'>
+                <strong>Authors</strong>:
+                {{course.authors | stringJoiner: joiner}}
+            </div>
+            <div>
+                <strong>Duration</strong>: {{course.duration | duration}}
+            </div>
+            <div>
+                <strong>Created</strong>: {{course.creationDate | creationDate}}
+            </div>
+            <ng-content></ng-content>
+        </div>
+    </div>
+</section>
