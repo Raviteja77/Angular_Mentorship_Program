@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-confirmation-modal',
@@ -16,9 +16,17 @@ export class ConfirmationModalComponent implements OnInit {
   @Input()
   cancelButtonText!: string;
 
+  @Output()
+  emitButtonClick: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  clickHandler(): void {
+    this.emitButtonClick.emit(true);
+    document.getElementById("close")?.click();
   }
 
 }

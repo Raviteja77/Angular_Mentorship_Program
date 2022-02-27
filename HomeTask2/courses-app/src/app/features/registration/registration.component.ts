@@ -3,6 +3,7 @@ import { buttonText } from '../../shared/constants';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { emailValidator } from 'src/app/custom_directives/emailValidator/emailvalidator.directive';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -13,11 +14,11 @@ export class RegistrationComponent implements OnInit {
 
   user:FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private auth: AuthService) {
     this.user = this.formBuilder.group({
-      name: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      email: new FormControl('', [Validators.required, emailValidator()]),
-      password: new FormControl('', [Validators.required]),
+      name: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
+      email: this.formBuilder.control('', [Validators.required, emailValidator()]),
+      password: this.formBuilder.control('', [Validators.required]),
     });
   }
 
@@ -41,7 +42,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   submitForm(): void {
-    console.log(this.user);
+    this.auth.register(this.user.value);   
   }
 
 }

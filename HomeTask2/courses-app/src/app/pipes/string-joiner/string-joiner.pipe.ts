@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StringJoinerPipe implements PipeTransform {
 
   transform(value: string[], joiner: string): string {
-    return value.join(joiner);
+    return value?.join(joiner);
   }
 
 }

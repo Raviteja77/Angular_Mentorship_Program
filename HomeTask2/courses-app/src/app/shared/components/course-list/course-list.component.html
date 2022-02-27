@@ -1,18 +1,27 @@
 <div class="courses">
-    <div class="courses__search">
-        <app-search></app-search>
+    <div class="row m-2">
+        <div class="col-8">
+            <app-search (emitEvent)="searchWord($event)"></app-search>
+
+        </div>
+        <div class="col-4 text-end" *ngIf="isAdmin">
+            <app-button routerLink="add" [buttonClass]="'btn btn-outline-primary'"
+                        [buttonText]="buttonText.CREATE_COURSE"
+                        ></app-button>
+        </div>
     </div>
-    <ng-container *ngFor="let course of courseList">
+    <div class="courses__search">
+    </div>
+    <ng-container *ngFor="let course of courseList | searchFilter: searchKey">
         <div class="courses_list">
             <app-course-card [course]="course">
                 <div class="courses_list_buttons">
-                    <app-button [buttonClass]="'btn btn-outline-primary'"
-                        [buttonText]="buttonText.SHOWCOURSE"
-                        (emitButtonClick)="clickHandler($event)"></app-button>
-                    <ng-template [ngIf]="isCoursesEditable">
-                        <app-button [buttonClass]="'btn btn-outline-info'"
+                    <app-button routerLink="{{course.id}}" [buttonClass]="'btn btn-outline-primary'"
+                        [buttonText]="buttonText.SHOWCOURSE"></app-button>
+                    <ng-template [ngIf]="isAdmin">
+                        <app-button routerLink="edit/{{course.id}}" [buttonClass]="'btn btn-outline-info'"
                             [iconName]="penIcon"></app-button>
-                        <app-button [buttonClass]="'btn btn-outline-danger'"
+                        <app-button (emitButtonClick)="saveDeleteCourseId(course.id)" [showModal]="true" [buttonClass]="'btn btn-outline-danger'"
                             [iconName]="trashIcon"></app-button>
                     </ng-template>
                 </div>
@@ -20,3 +29,7 @@
         </div>
     </ng-container>
 </div>
+
+<app-confirmation-modal [title]="'Delete'" [okButtonText]="buttonText.CONFIRM" [cancelButtonText]="buttonText.CANCEL" (emitButtonClick)="deleteCourse(deleteCourseId)">
+    <ng-container>Are you sure to delete the course.?</ng-container>
+</app-confirmation-modal>

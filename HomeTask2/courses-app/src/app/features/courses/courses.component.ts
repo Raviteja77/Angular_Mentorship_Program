@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoursesService } from 'src/app/services/courses.service';
+import { CoursesStoreService } from 'src/app/services/courses/courses-store.service';
 import { buttonText } from '../../shared/constants';
 
 @Component({
@@ -11,26 +11,21 @@ export class CoursesComponent implements OnInit {
 
   coursesList!: any;
 
-  isCoursesEditable: boolean = true;
-
-  showModal: boolean = true;
+  isLoading!: boolean;
 
   buttonText = buttonText;
 
-  constructor(private courses_service: CoursesService) {
-    this.courses_service.getCoursesList().subscribe(data => {
-      this.coursesList = data;
-      console.log(this.coursesList);
+  constructor(private courses_store: CoursesStoreService) {
+    this.courses_store.getAllCourses();
+    this.courses_store.courses$.subscribe(data => {
+      this.coursesList = data;  
+    });
+    this.courses_store.isLoading$.subscribe(data => {
+      this.isLoading = data;
     })
    }
 
   ngOnInit(): void {
-  }
-
-  updateModalStatus(event: any): void {
-    this.showModal = event;
-    console.log(this.showModal);
-    
   }
 
 }

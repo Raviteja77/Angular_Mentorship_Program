@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { buttonText } from '../../shared/constants';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { NgForm } from '@angular/forms';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +11,9 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
-
+  
+  constructor(private auth: AuthService) { }
+  
   ngOnInit(): void {}
 
   user = {
@@ -24,8 +26,7 @@ export class LoginComponent implements OnInit {
   faEyeSlash = faEyeSlash;
 
   onFormSubmit(form: NgForm): void {
-    console.log(form);
-    
+    this.auth.login(form.form.value);
   }
 
 }
