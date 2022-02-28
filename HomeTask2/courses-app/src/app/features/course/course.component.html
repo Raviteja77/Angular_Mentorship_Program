@@ -1,1 +1,25 @@
-<p>course works!</p>
+
+<div class="course_info">
+    <app-button (emitButtonClick)="goBack()" [buttonClass]="'btn btn-outline-secondary'" [buttonText]="buttonText.BACK_TO_COURSES"></app-button>
+    <div class='course_info_title text-center'>
+        <h1>{{course.title}}</h1>
+    </div>
+    <div class='row'>
+        <div class='col-6'>{{course.description}}</div>
+        <div class='col-6'>
+            <div>
+                <strong>ID</strong>: {{course.id}}
+            </div>
+            <div>
+                <strong>Duration</strong>:
+                {{course.duration | duration}}
+            </div>
+            <div>
+                <strong>Created</strong>: {{course.creationDate | creationDate}}
+            </div>
+            <div>
+                <strong>Authors</strong>:{{course.authors | getAuthorsName | stringJoiner: ', '}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,9 +4,8 @@ import { RegistrationComponent } from './registration.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EmailvalidatorDirective } from 'src/app/custom_directives/emailValidator/emailvalidator.directive';
-import { ToggleDirective } from 'src/app/custom_directives/toggle/toggle.directive';
 import { CustomDirectivesModule } from 'src/app/custom_directives/custom-directives.module';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -18,7 +17,8 @@ import { CustomDirectivesModule } from 'src/app/custom_directives/custom-directi
     FontAwesomeModule,
     SharedModule,
     ReactiveFormsModule,
-    CustomDirectivesModule
+    CustomDirectivesModule,
+    RouterModule
   ],
   exports: [
     RegistrationComponent

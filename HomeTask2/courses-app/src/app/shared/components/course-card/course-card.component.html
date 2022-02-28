@@ -1,4 +1,4 @@
-<section class='course'>
+<section *ngIf="!isLoading" class='course'>
     <div class='row'>
         <div class='col-8'>
             <h3>{{course.title}}</h3>
@@ -7,7 +7,7 @@
         <div class='col-4'>
             <div class='authors'>
                 <strong>Authors</strong>:
-                {{course.authors | stringJoiner: joiner}}
+                {{ course.authors | getAuthorsName | stringJoiner: joiner}}
             </div>
             <div>
                 <strong>Duration</strong>: {{course.duration | duration}}

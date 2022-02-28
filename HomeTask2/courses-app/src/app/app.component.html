@@ -1,16 +1,16 @@
 
 <app-header>
-    <div class="d-flex">
-        <strong class="username">Ravi Teja</strong>
+    <div class="d-flex" *ngIf="isAuthorized">
+        <strong class="username">{{token?.result?.name}}</strong>
         <div>
-            <app-button [buttonClass]="'btn btn-outline-danger'" [buttonText]="buttonText.LOGOUT" (emitButtonClick)="updateModalStatus($event)">
+            <app-button [buttonClass]="'btn btn-outline-danger'"
+                [buttonText]="buttonText.LOGOUT"
+                (emitButtonClick)="logoutUser($event)">
             </app-button>
         </div>
-    </div> 
+    </div>
 </app-header>
 
-<app-courses></app-courses>
-
-<!-- <app-login></app-login> -->
-
-<!-- <app-registration></app-registration> -->
+<div class="content">
+    <router-outlet></router-outlet>
+</div>

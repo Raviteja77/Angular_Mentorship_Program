@@ -15,6 +15,10 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreationDatePipe } from '../pipes/creation-date/creation-date.pipe';
 import { StringJoinerPipe } from '../pipes/string-joiner/string-joiner.pipe';
+import { GetAuthorsNamePipe } from '../pipes/getAuthorsName/get-authors-name.pipe';
+import { CoursesRoutingModule } from '../features/courses/courses-routing.module';
+import { RouterModule } from '@angular/router';
+import { SearchFilterPipe } from '../pipes/searchFilter/search-filter.pipe';
 
 const listOfComponents = [
   ButtonComponent,
@@ -28,11 +32,13 @@ const listOfComponents = [
   CourseFormComponent,
   CreationDatePipe,
   StringJoinerPipe,
+  GetAuthorsNamePipe,
+  SearchFilterPipe
 ];
 
 @NgModule({
   declarations: listOfComponents,
-  imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule],
+  imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule, CoursesRoutingModule, RouterModule],
   exports: listOfComponents,
 })
 export class SharedModule {}

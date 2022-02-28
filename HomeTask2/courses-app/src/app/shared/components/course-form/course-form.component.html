@@ -1,9 +1,9 @@
-<form class="courses-form" [formGroup]="course" (ngSubmit)="submitForm()">
+<form *ngIf="!isLoading" class="courses-form" [formGroup]="course" (ngSubmit)="submitForm()">
     <div class="row m-2">
         <div class="col-6">
             <label for="title" class="form-label"><strong>Title</strong></label>
             <input type="text" class="form-control" formControlName="title"
-                id="title">
+                id="title" [value]="form.title?.value">
             <div *ngIf="form.title?.touched">
                 <div class="error-msg" *ngIf="form.title?.errors?.required">
                     Title is required
@@ -11,7 +11,8 @@
             </div>
         </div>
         <div class="col-6 text-end">
-            <app-button [buttonText]="buttonText.CREATE_COURSE"
+            <app-button [buttonText]="(this.editCourse && this.editCourse.id)?
+                buttonText.UPDATE_COURSE: buttonText.CREATE_COURSE"
                 [buttonType]="buttonText.SUBMIT_TYPE" [buttonClass]="'btn
                 btn-outline-primary mt-4'"></app-button>
         </div>
@@ -19,7 +20,7 @@
     <div class="courses-form__decription">
         <label for="description" class="form-label"><strong>Description</strong></label>
         <textarea class="description__text" formControlName="description"
-            cols="160" rows="7"></textarea>
+            cols="160" rows="7" [value]="form.description?.value"></textarea>
         <div *ngIf="form.description?.touched">
             <div class="error-msg" *ngIf="form.description?.errors?.required">
                 Description is required
@@ -33,39 +34,68 @@
                     </div>
                     <label for="Author_name" class="form-label"><strong>Author
                             name</strong></label>
-                    <input type="text" formControlName="author"
+                    <input type="text" formControlName="authorName"
                         class="form-control" id="author_name">
-                    <app-button [buttonText]="buttonText.CREATE_AUTHOR"
+                    <app-button (emitButtonClick)="addAuthor()"
+                        [buttonText]="buttonText.CREATE_AUTHOR"
                         [buttonClass]="'btn btn-outline-primary m-2'"></app-button>
-                    <div>
-                        <div class="text-center">
-                            <strong>Duration</strong>
-                        </div>
-                        <label for="duration" class="form-label"><strong>Duration</strong></label>
-                        <input type="number" formControlName="duration"
-                            class="form-control" id="duration">
-                        <div *ngIf="form.duration?.touched">
-                            <div class="error-msg"
-                                *ngIf="form.duration?.errors?.required">
-                                Duration is required
-                            </div>
-                        </div>
-                        <div>Duration: </div>
-                    </div>
                 </div>
                 <div class="col-6 text-center">
                     <strong>Authors List</strong>
-                    <div class="row m-1">
-                        <div class="col-6">
-                            <strong>Vasiley</strong>
+                    <ng-container *ngFor="let author of authorsList">
+                        <div class="row m-1">
+                            <div class='col-6 text-end mt-3'>{{author.name}}</div>
+                            <div class='col-6 text-start'>
+                                <app-button
+                                    (emitButtonClick)="pushAuthorToForm(author)"
+                                    [buttonText]="buttonText.ADD_AUTHOR"
+                                    [buttonClass]="'btn btn-outline-success
+                                    m-2'"></app-button>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <app-button [buttonText]="buttonText.DELETE_AUTHOR"
-                        [buttonClass]="'btn btn-outline-danger'"></app-button>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="text-center">
+                        <strong>Duration</strong>
+                    </div>
+                    <label for="duration" class="form-label"><strong>Duration</strong></label>
+                    <input type="number" formControlName="duration"
+                        class="form-control" id="duration"
+                        [value]="form.duration.value">
+                    <div *ngIf="form.duration?.touched">
+                        <div class="error-msg"
+                            *ngIf="form.duration?.errors?.required">
+                            Duration is required
                         </div>
                     </div>
+                    <div>Duration: {{form.duration && form.duration.value?
+                        (form.duration.value | duration): '0'}}</div>
+                </div>
+                <div class="col-6 text-center">
+                    <strong>Course Authors List</strong>
+                    <ng-container *ngFor="let author of authorsWithNamesArray">
+                        <div class="row m-1">
+                            <div class='col-6 text-end mt-3'>{{author.name}}</div>
+                            <div class='col-6 text-start'>
+                                <app-button
+                                    (emitButtonClick)="removeAuthorFromForm(author)"
+                                    [buttonText]="buttonText.DELETE_AUTHOR"
+                                    [buttonClass]="'btn btn-outline-danger
+                                    m-2'"></app-button>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

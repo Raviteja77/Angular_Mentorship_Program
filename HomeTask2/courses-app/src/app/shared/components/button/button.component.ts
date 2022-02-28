@@ -11,6 +11,7 @@ export class ButtonComponent implements OnInit {
   @Input() buttonClass: string = 'btn btn-outline-primary';
   @Input() iconName: any = '';
   @Input() buttonType: string = 'button';
+  @Input() showModal: boolean = false;
 
   @Output()
   emitButtonClick: EventEmitter<boolean> = new EventEmitter<boolean>();

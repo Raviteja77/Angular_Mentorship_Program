@@ -1,5 +1,5 @@
 <form class="d-flex">
-    <input class="form-control me-2" type="search" [placeholder]="inputPlaceholder">
-    <app-button [buttonClass]="'btn btn-outline-primary'"
-                        [buttonText]="buttonText.SEARCH"></app-button>
+    <input class="form-control me-2" type="search" [placeholder]="inputPlaceholder" (change)="saveSearchWord($event)">
+    <app-button [buttonClass]="'btn btn-outline-secondary'"
+                        [buttonText]="buttonText.SEARCH" (emitButtonClick)="clickHandler($event)"></app-button>
   </form>

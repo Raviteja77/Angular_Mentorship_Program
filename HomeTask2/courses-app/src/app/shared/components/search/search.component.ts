@@ -21,4 +21,14 @@ export class SearchComponent implements OnInit {
 
   buttonText = buttonText;
 
+  searchKeyword: string = '';
+
+  saveSearchWord(event: any): void {
+    this.searchKeyword = event.target.value;
+  }
+
+  clickHandler(event: any): void {
+    this.emitEvent.emit(this.searchKeyword);
+  }
+
 }

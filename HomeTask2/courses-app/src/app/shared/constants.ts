@@ -11,4 +11,7 @@ export const buttonText = {
     DELETE_AUTHOR: 'Delete author',
     SUBMIT_TYPE: 'submit',
     BUTTON_TYPE: 'button',
+    BACK_TO_COURSES: '< Back to courses',
+    ADD_AUTHOR: 'Add author',
+    UPDATE_COURSE: 'Update course'
 }
