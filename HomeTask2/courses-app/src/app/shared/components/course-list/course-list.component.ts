@@ -1,20 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { CoursesStoreService } from 'src/app/services/courses/courses-store.service';
-import { UserStoreService } from 'src/app/user/services/user-store.service';
 import { buttonText } from '../../constants';
+import { UserFacade } from '../../../user/store/user.facade';
+import { AuthFacade } from 'src/app/auth/store/auth.facade';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 
 @Component({
   selector: 'app-course-list',
   templateUrl: './course-list.component.html',
-  styleUrls: ['./course-list.component.css']
+  styleUrls: ['./course-list.component.css'],
 })
 export class CourseListComponent implements OnInit {
-
   @Input()
   courseList!: any;
 
-  isAdmin!: boolean
+  isAdmin!: boolean;
 
   @Output()
   emitEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -29,14 +29,20 @@ export class CourseListComponent implements OnInit {
 
   deleteCourseId: string = '';
 
-  constructor(private userStore: UserStoreService, private coursesStore: CoursesStoreService) {
-    this.userStore.isAdmin$.subscribe((data: any) => {
-      this.isAdmin = data?.result?.role.toLowerCase() === 'admin' ? true : false;
-    })
+  constructor(
+    private userFacade: UserFacade,
+    private authFacade: AuthFacade,
+    private coursesFacade: CoursesStateFacade
+  ) {
+    this.authFacade.getToken$.subscribe((data) => {
+      this.userFacade.getCurrentUser(data);
+    });
+    this.userFacade.role$.subscribe((data) => {
+      this.isAdmin = data.toLowerCase() === 'admin' ? true : false;
+    });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   clickHandler(event: any): void {
     this.emitEvent.emit(event);
@@ -47,11 +53,10 @@ export class CourseListComponent implements OnInit {
   }
 
   deleteCourse(courseId: string): void {
-    this.coursesStore.deleteCourse(courseId);
+    this.coursesFacade.deleteCourse(courseId);
   }
 
   saveDeleteCourseId(courseId: string): void {
     this.deleteCourseId = courseId;
   }
-
 }

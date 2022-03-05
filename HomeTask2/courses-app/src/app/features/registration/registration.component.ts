@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { buttonText } from '../../shared/constants';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator } from 'src/app/custom_directives/emailValidator/emailvalidator.directive';
-import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { AuthFacade } from 'src/app/auth/store/auth.facade';
 
 @Component({
   selector: 'app-registration',
@@ -14,7 +14,7 @@ export class RegistrationComponent implements OnInit {
 
   user:FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private auth: AuthService) {
+  constructor(private formBuilder: FormBuilder, private authFacade: AuthFacade) {
     this.user = this.formBuilder.group({
       name: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
       email: this.formBuilder.control('', [Validators.required, emailValidator()]),
@@ -42,7 +42,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   submitForm(): void {
-    this.auth.register(this.user.value);   
+    this.authFacade.register(this.user.value); 
   }
 
 }

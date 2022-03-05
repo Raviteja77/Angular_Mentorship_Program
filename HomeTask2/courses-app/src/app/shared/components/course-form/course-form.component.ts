@@ -1,14 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
-  FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthorsStoreService } from 'src/app/services/authors/authors-store.service';
-import { CoursesStoreService } from 'src/app/services/courses/courses-store.service';
+import { ActivatedRoute } from '@angular/router';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 import { buttonText } from '../../constants';
 
 @Component({
@@ -22,16 +20,16 @@ export class CourseFormComponent implements OnInit {
   courseIdData: any;
   editCourse: any;
   authorsArray: string[] = [];
-  authorsWithNamesArray: any[] = [];
+  authorsForCourseAuthorList: any[] = [];
+  authorsForAuthorList: any[] = [];
   buttonText = buttonText;
   isLoading: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authorsStore: AuthorsStoreService,
     private activatedRoute: ActivatedRoute,
-    private courseStore: CoursesStoreService,
-    private router: Router
+    private authorsFacade: AuthorsStateFacade,
+    private coursesFacade: CoursesStateFacade
   ) {
     this.activatedRoute.params.subscribe((data: any) => {
       this.courseIdData = data;
@@ -43,19 +41,20 @@ export class CourseFormComponent implements OnInit {
       description: this.formBuilder.control('', [Validators.required]),
       duration: this.formBuilder.control('', [Validators.required]),
     });
-    this.authorsStore.getAllAuthors();
-    this.authorsStore.authors$.subscribe((data) => {
+    this.authorsFacade.getAllAuthors();
+    this.authorsFacade.authors$.subscribe(data => {
       this.authorsList = data;
-    });
+    })
+    this.authorsForAuthorList = this.authorsList;
     if (this.courseIdData && this.courseIdData.id) {
-      this.courseStore.getCourse(this.courseIdData.id);
-      this.courseStore.course$.subscribe((data) => {
+      this.coursesFacade.getSpecificCourse(this.courseIdData.id);
+      this.coursesFacade.course$.subscribe(data => {
         this.editCourse = data;
-      });
-      this.courseStore.isEditCourseLoading$.subscribe((data) => {
+      })
+      this.coursesFacade.isSingleCourseLoading$.subscribe(data => {
         this.isLoading = data;
         this.updateFormValues();
-      });
+      })
     }
   }
 
@@ -65,7 +64,7 @@ export class CourseFormComponent implements OnInit {
 
   updateFormValues(): void {
     if (!this.isLoading) {
-      this.authorsWithNamesArray = [];
+      this.authorsForCourseAuthorList = [];
       this.authorsArray = [];
       this.course.patchValue(
         {
@@ -81,7 +80,7 @@ export class CourseFormComponent implements OnInit {
   }
 
   addNewAuthor() {
-    this.authorsList.forEach((author: any) => {
+    this.authorsForAuthorList.forEach((author: any) => {
       if (
         author.name.toLowerCase() === this.course.value.authorName.toLowerCase()
       ) {
@@ -91,20 +90,20 @@ export class CourseFormComponent implements OnInit {
   }
 
   pushAuthorToForm(author: any) {
-    this.authorsWithNamesArray.push(author);
+    this.authorsForCourseAuthorList.push(author);
     this.authorsArray.push(author.id);
-    this.authorsList = this.authorsList.filter((authorList: any) => authorList.id !== author.id);
+    this.authorsForAuthorList = this.authorsForAuthorList.filter((authorList: any) => authorList.id !== author.id);
   }
 
   removeAuthorFromForm(author: any) {
-    this.authorsWithNamesArray = this.authorsWithNamesArray.filter((authorWithName: any) => authorWithName.id !== author.id);
+    this.authorsForCourseAuthorList = this.authorsForCourseAuthorList.filter((authorWithName: any) => authorWithName.id !== author.id);
     this.authorsArray = this.authorsArray.filter(authorArray => authorArray !== author.id);
-    this.authorsList.push(author);
+    this.authorsForAuthorList.push(author);
   }
 
   getEditCourseAuthors() {
     this.editCourse.authors.forEach((editCourseAuthors: any) => {
-      this.authorsList.forEach((author: any) => {
+      this.authorsForAuthorList.forEach((author: any) => {
         if (author.id === editCourseAuthors) {
           this.pushAuthorToForm(author);
         }
@@ -113,16 +112,19 @@ export class CourseFormComponent implements OnInit {
   }
 
   addAuthor() {
-    this.authorsStore.addAuthor(this.course.value.authorName);
+    this.authorsFacade.addAuthor(this.course.value.authorName);
   }
 
   submitForm(): void {
-    if (this.courseIdData && this.courseIdData.id) {
-      this.courseStore.editCourse(this.course.value, this.authorsArray);
-    } else {
-      this.courseStore.createCourse(this.course.value, this.authorsArray);
+    const form = {
+      course: this.course.value,
+      authors: this.authorsArray
     }
-    this.router.navigate(['/courses']);
+    if (this.courseIdData && this.courseIdData.id) {
+      this.coursesFacade.editCourse(form);
+    } else {
+      this.coursesFacade.createCourse(form);
+    }
   }
   
   ngOnInit(): void {}

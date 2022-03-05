@@ -1,4 +1,5 @@
-<form *ngIf="!isLoading" class="courses-form" [formGroup]="course" (ngSubmit)="submitForm()">
+<form *ngIf="!isLoading" class="courses-form" [formGroup]="course"
+    (ngSubmit)="submitForm()">
     <div class="row m-2">
         <div class="col-6">
             <label for="title" class="form-label"><strong>Title</strong></label>
@@ -42,18 +43,20 @@
                 </div>
                 <div class="col-6 text-center">
                     <strong>Authors List</strong>
-                    <ng-container *ngFor="let author of authorsList">
-                        <div class="row m-1">
-                            <div class='col-6 text-end mt-3'>{{author.name}}</div>
-                            <div class='col-6 text-start'>
-                                <app-button
-                                    (emitButtonClick)="pushAuthorToForm(author)"
-                                    [buttonText]="buttonText.ADD_AUTHOR"
-                                    [buttonClass]="'btn btn-outline-success
-                                    m-2'"></app-button>
+                    <div *ngIf="authorsForAuthorList.length" class="scrollbar">
+                        <ng-container *ngFor="let author of authorsForAuthorList">
+                            <div class="row m-1">
+                                <div class='col-6 text-end mt-3'>{{author.name}}</div>
+                                <div class='col-6 text-start'>
+                                    <app-button
+                                        (emitButtonClick)="pushAuthorToForm(author)"
+                                        [buttonText]="buttonText.ADD_AUTHOR"
+                                        [buttonClass]="'btn btn-outline-success
+                                        m-2'"></app-button>
+                                </div>
                             </div>
-                        </div>
-                    </ng-container>
+                        </ng-container>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -76,18 +79,21 @@
                 </div>
                 <div class="col-6 text-center">
                     <strong>Course Authors List</strong>
-                    <ng-container *ngFor="let author of authorsWithNamesArray">
-                        <div class="row m-1">
-                            <div class='col-6 text-end mt-3'>{{author.name}}</div>
-                            <div class='col-6 text-start'>
-                                <app-button
-                                    (emitButtonClick)="removeAuthorFromForm(author)"
-                                    [buttonText]="buttonText.DELETE_AUTHOR"
-                                    [buttonClass]="'btn btn-outline-danger
-                                    m-2'"></app-button>
+                    <div *ngIf="authorsForCourseAuthorList.length" class="scrollbar">
+                        <ng-container *ngFor="let author of
+                        authorsForCourseAuthorList">
+                            <div class="row m-1">
+                                <div class='col-6 text-end mt-3'>{{author.name}}</div>
+                                <div class='col-6 text-start'>
+                                    <app-button
+                                        (emitButtonClick)="removeAuthorFromForm(author)"
+                                        [buttonText]="buttonText.DELETE_AUTHOR"
+                                        [buttonClass]="'btn btn-outline-danger
+                                        m-2'"></app-button>
+                                </div>
                             </div>
-                        </div>
-                    </ng-container>
+                        </ng-container>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,6 +102,6 @@
 
 <div *ngIf="isLoading" class="d-flex justify-content-center">
     <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">Loading...</span>
     </div>
 </div>

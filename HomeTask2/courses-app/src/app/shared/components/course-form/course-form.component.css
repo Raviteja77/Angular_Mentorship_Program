@@ -18,3 +18,8 @@ input {
 .error-msg {
   color: red;
 }
+
+.scrollbar {
+  overflow-y: scroll;
+  height: 55%;
+}

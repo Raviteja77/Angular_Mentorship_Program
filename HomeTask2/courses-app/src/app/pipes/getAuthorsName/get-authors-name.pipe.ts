@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AuthorsStoreService } from 'src/app/services/authors/authors-store.service';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
 
 @Pipe({
   name: 'getAuthorsName'
@@ -7,21 +7,19 @@ import { AuthorsStoreService } from 'src/app/services/authors/authors-store.serv
 export class GetAuthorsNamePipe implements PipeTransform {
 
   authorsName: string[] = [];
-  list: string[] = [];
 
-  constructor(private authorsStore: AuthorsStoreService) {
-    this.authorsStore.getAllAuthors();
-    this.authorsStore.authors$.subscribe(data => {
-      this.list = data;
-    });
+  constructor(private authorsFacade: AuthorsStateFacade) {
+    this.authorsFacade.getAllAuthors();
   }
 
   transform(authorsId: string[]): string[] {
-    authorsId.forEach(authorId => {
-      this.list.forEach((list: any) => {
-        if(list['id'] === authorId) {
-          this.authorsName.push(list['name']);
-        }
+    this.authorsFacade.authors$.subscribe(data => {
+      data.forEach((list: any) => {
+        authorsId.forEach(authorId => {
+          if(list.id === authorId) {
+            this.authorsName.push(list.name);
+          }
+        })
       })
     })
     return this.authorsName;

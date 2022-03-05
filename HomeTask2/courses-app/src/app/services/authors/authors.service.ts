@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { AuthFacade } from 'src/app/auth/store/auth.facade';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,18 +9,18 @@ import { AuthService } from 'src/app/auth/services/auth/auth.service';
 export class AuthorsService {
 
   authorizationToken: string = '';
-  constructor(private http: HttpClient, private auth: AuthService) {
-    this.auth.isAuthorized$.subscribe(data => {
-      this.authorizationToken = data; 
+  constructor(private http: HttpClient, private authFacade: AuthFacade) {
+    this.authFacade.getToken$.subscribe(data => {
+      this.authorizationToken = data;
     })
    }
 
   getAllAuthors() {
-    return this.http.get('http://localhost:3000/authors/all');
+    return this.http.get(environment.endpoints.allAuthors);
   }
 
   addAuthor(authorName: string) {
-    return this.http.post('http://localhost:3000/authors/add', { name: authorName }, {
+    return this.http.post(environment.endpoints.addAuthor, { name: authorName }, {
       headers: { Authorization: this.authorizationToken },
     })
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoursesStoreService } from 'src/app/services/courses/courses-store.service';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 import { buttonText } from '../../shared/constants';
 
 @Component({
@@ -15,14 +15,14 @@ export class CoursesComponent implements OnInit {
 
   buttonText = buttonText;
 
-  constructor(private courses_store: CoursesStoreService) {
-    this.courses_store.getAllCourses();
-    this.courses_store.courses$.subscribe(data => {
-      this.coursesList = data;  
+  constructor(private coursesFacade: CoursesStateFacade) {
+    this.coursesFacade.getAllCourses();
+    this.coursesFacade.allCourses$.subscribe(data => {
+      this.coursesList = data;
     });
-    this.courses_store.isLoading$.subscribe(data => {
+    this.coursesFacade.isAllCoursesLoading$.subscribe(data => {
       this.isLoading = data;
-    })
+    });
    }
 
   ngOnInit(): void {

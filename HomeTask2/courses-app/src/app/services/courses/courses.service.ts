@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { environment } from 'src/environments/environment';
+import { AuthFacade } from 'src/app/auth/store/auth.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -8,44 +9,44 @@ import { AuthService } from 'src/app/auth/services/auth/auth.service';
 export class CoursesService {
 
   authorizationToken: string = '';
-  constructor(private http: HttpClient, private auth: AuthService) {
-    this.auth.isAuthorized$.subscribe(data => {
-      this.authorizationToken = data; 
+  constructor(private http: HttpClient, private authFacade: AuthFacade) {
+    this.authFacade.getToken$.subscribe(data => {
+      this.authorizationToken = data;
     })
    }
 
   getAllCourses() {
-    return this.http.get('http://localhost:3000/courses/all');
+    return this.http.get(environment.endpoints.allCourses);
   }
 
   getCourse(courseId: string) {
-    return this.http.get(`http://localhost:3000/courses/${courseId}`);
+    return this.http.get(`${environment.endpoints.courses}/${courseId}`);
   }
 
-  createCourse(course: any, authors: string[]) {
-    return this.http.post('http://localhost:3000/courses/add', {
-      title: course.title,
-      description: course.description,
+  createCourse(form: any) {
+    return this.http.post(`${environment.endpoints.addCourse}`, {
+      title: form.course.title,
+      description: form.course.description,
       duration:
-        typeof course.duration === 'string'
-          ? parseInt(course.duration)
-          : course.duration,
-      authors: authors,
+        typeof form.course.duration === 'string'
+          ? parseInt(form.course.duration)
+          : form.course.duration,
+      authors: form.authors,
     },
     {
       headers: { Authorization: this.authorizationToken },
     })
   }
 
-  editCourse(editCourse: any, authors: string[]) {
-    return this.http.put(`http://localhost:3000/courses/${editCourse.id}`, {
-      title: editCourse.title,
-      description: editCourse.description,
+  editCourse(form: any) {
+    return this.http.put(`${environment.endpoints.courses}/${form.course.id}`, {
+      title: form.course.title,
+      description: form.course.description,
       duration:
-        typeof editCourse.duration === 'string'
-          ? parseInt(editCourse.duration)
-          : editCourse.duration,
-      authors: authors,
+        typeof form.course.duration === 'string'
+          ? parseInt(form.course.duration)
+          : form.course.duration,
+      authors: form.authors,
     },
     {
       headers: { Authorization: this.authorizationToken },
@@ -53,7 +54,7 @@ export class CoursesService {
   }
 
   deleteCourse(courseId: string) {
-    return this.http.delete(`http://localhost:3000/courses/${courseId}`, {
+    return this.http.delete(`${environment.endpoints.courses}/${courseId}`, {
       headers: { Authorization: this.authorizationToken },
     })
   }

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth/services/auth/auth.service';
-import { SessionStorageService } from './auth/services/session-storage/session-storage.service';
+import { AuthFacade } from './auth/store/auth.facade';
 import { buttonText } from './shared/constants';
-import { UserStoreService } from './user/services/user-store.service';
+import { UserFacade } from './user/store/user.facade';
 
 @Component({
   selector: 'app-root',
@@ -16,20 +16,25 @@ export class AppComponent {
   buttonText = buttonText;
 
   token: any;
-  isAuthorized: string = '';
+  isAuthorized!: boolean;
+  userName: string = '';
 
-  constructor(private auth: AuthService, private sessionStore: SessionStorageService, private userStore: UserStoreService) {
-    this.userStore.name$.subscribe((data : any) => {
-      this.token = data;
-    })
-    this.auth.isAuthorized$.subscribe((data : any) => {
+  constructor(private auth: AuthService, private authFacade: AuthFacade, private userFacade: UserFacade) {
+    this.authFacade.isAuthorized$.subscribe(data => {
       this.isAuthorized = data;
+    })
+    this.authFacade.getToken$.subscribe(data => {
+      this.userFacade.getCurrentUser(data);
+    })
+    this.userFacade.name$.subscribe(data => {
+      this.userName = data;
+    })
+    this.authFacade.getToken$.subscribe(data => {
+      this.token = data;
     })
   }
 
-  logoutUser(event: any): void {
-    const tokenData = this.sessionStore.getToken();
-    this.auth.logout(tokenData);
-    
+  logoutUser(): void {
+    this.authFacade.logout(this.token)
   }
 }
