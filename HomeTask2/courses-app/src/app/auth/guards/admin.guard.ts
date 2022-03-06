@@ -7,13 +7,13 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserStoreService } from 'src/app/user/services/user-store.service';
+import { UserFacade } from 'src/app/user/store/user.facade';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
-  constructor(private userStore: UserStoreService, private router: Router) {}
+  constructor(private router: Router, private userFacade: UserFacade) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -24,8 +24,8 @@ export class AdminGuard implements CanActivate {
     | boolean
     | UrlTree {
     let isAdmin = false;
-    this.userStore.isAdmin$.subscribe((data) => {
-      isAdmin = data?.result?.role.toLowerCase() === 'admin' ? true : false;
+    this.userFacade.role$.subscribe((data) => {
+      isAdmin = data.toLowerCase() === 'admin' ? true : false;
     });
     if (!isAdmin) {
       this.router.navigate(['/courses']);

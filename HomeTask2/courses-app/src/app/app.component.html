@@ -1,11 +1,11 @@
 
 <app-header>
     <div class="d-flex" *ngIf="isAuthorized">
-        <strong class="username">{{token?.result?.name}}</strong>
+        <strong class="username">{{ userName }}</strong>
         <div>
             <app-button [buttonClass]="'btn btn-outline-danger'"
                 [buttonText]="buttonText.LOGOUT"
-                (emitButtonClick)="logoutUser($event)">
+                (emitButtonClick)="logoutUser()">
             </app-button>
         </div>
     </div>

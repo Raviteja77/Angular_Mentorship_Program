@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { UserStoreService } from 'src/app/user/services/user-store.service';
-import { SessionStorageService } from '../session-storage/session-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,36 +11,26 @@ export class AuthService {
   private isAuthorized$$ = new BehaviorSubject<any>('');
   public isAuthorized$ = this.isAuthorized$$.asObservable();
 
-  constructor(private http: HttpClient, private sessionStore: SessionStorageService, private userStore: UserStoreService, private router: Router) { }
+  constructor(private http: HttpClient) { }
 
   register(postRegisterDetails: any) {
-    return this.http.post('http://localhost:3000/register', {
+    return this.http.post(environment.endpoints.register, {
       email: postRegisterDetails.email,
       name: postRegisterDetails.name,
       password: postRegisterDetails.password,
-    }).subscribe(() => {
-      this.router.navigate(['/login']);
-    })
+    });
   }
 
   login(postLoginDetails: any) {
-    return this.http.post('http://localhost:3000/login', {
+    return this.http.post(environment.endpoints.login, {
       email: postLoginDetails.email,
       password: postLoginDetails.password,
-    }).subscribe((data : any)=> {
-      this.isAuthorized$$.next(data.result);
-      this.sessionStore.setToken(data.result);
-      const token = this.sessionStore.getToken();
-      this.userStore.getUser(token);
     });
   }
 
   logout(authorizationToken: string) {
-    return this.http.delete('http://localhost:3000/logout', {
+    return this.http.delete(environment.endpoints.logout, {
       headers: { Authorization: authorizationToken },
-    }).subscribe(() => {
-      this.isAuthorized$$.next(false);
-      this.sessionStore.deleteToken();
-    })
+    });
   }
 }

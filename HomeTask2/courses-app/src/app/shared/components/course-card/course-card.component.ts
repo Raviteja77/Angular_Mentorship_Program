@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthorsStoreService } from 'src/app/services/authors/authors-store.service';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
 
 @Component({
   selector: 'app-course-card',
@@ -7,23 +7,22 @@ import { AuthorsStoreService } from 'src/app/services/authors/authors-store.serv
   styleUrls: ['./course-card.component.css'],
 })
 export class CourseCardComponent implements OnInit {
-
   @Input()
   course!: any;
 
   authorsList!: any;
-  isLoading!: boolean;
+  isLoading: boolean = true;
 
   joiner: string = ', ';
-  
-  constructor(private authors_store: AuthorsStoreService) {
-    this.authors_store.getAllAuthors();
-    this.authors_store.authors$.subscribe(data => {
+
+  constructor(private authorsFacade: AuthorsStateFacade) {
+    this.authorsFacade.getAllAuthors();
+    this.authorsFacade.authors$.subscribe((data) => {
       this.authorsList = data;
-    })
-    this.authors_store.isLoading$.subscribe(data => {
+    });
+    this.authorsFacade.isLoading$.subscribe((data) => {
       this.isLoading = data;
-    })
+    });
   }
 
   ngOnInit(): void {}

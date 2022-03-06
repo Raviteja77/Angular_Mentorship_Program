@@ -10,6 +10,17 @@ import { RegistrationModule } from './features/registration/registration.module'
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CourseModule } from './features/course/course.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers, effects } from './store/index'
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { UserFacade } from './user/store/user.facade';
+import { UserEffects } from './user/store/user.effects';
+import { userReducer } from './user/store/user.reducer';
+import { environment } from 'src/environments/environment';
+import { AuthFacade } from './auth/store/auth.facade';
+import { AuthorsStateFacade } from './store/authors/authors.facade';
+import { CoursesStateFacade } from './store/courses/courses.facade';
 
 @NgModule({
   declarations: [
@@ -24,9 +35,16 @@ import { CourseModule } from './features/course/course.module';
     RegistrationModule,
     SharedModule,
     AppRoutingModule,
-    CourseModule
+    CourseModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+    }),
+    EffectsModule.forRoot(effects)
   ],
-  providers: [],
+  providers: [UserFacade, AuthFacade, AuthorsStateFacade, CoursesStateFacade],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
